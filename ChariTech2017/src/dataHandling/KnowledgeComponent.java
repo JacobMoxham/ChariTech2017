@@ -24,4 +24,12 @@ public class KnowledgeComponent {
 	public int getId() {
 		return id;
 	}
+	
+	public Set<Content> getContentSet() {
+		return questionSet;
+	}
+	
+	public Set<Memory> getMemorySet() {
+		return memorySet;
+	}
 }

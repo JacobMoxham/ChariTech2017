@@ -55,7 +55,7 @@ public abstract class Screen {
     		CircleButton metBut = new CircleButton(metric.getName() + Double.toString(Double.metric.getValue()), 50 + (metric.getValue()/total)*200);
     		//Handle clicks
     		if (metric.thatBooleanThing){
-    			metBut.setOnAction(e -> createMetricScreen(metric.getTimeSensitiveMetrics));
+    			metBut.setOnAction(e -> createSingleMetricScreen(metric.getTimeSensitiveMetrics));
     		}
     		gridPane.add(metBut, i, 1);
     		i++;
@@ -63,7 +63,7 @@ public abstract class Screen {
     	//TODO: make sure this stuff gets drawn
     	
     }
-    protected void createMetricScreen(List<Metric> timeMetrics){
+    protected void createSingleMetricScreen(List<Metric> timeMetrics){
     	
     }
 

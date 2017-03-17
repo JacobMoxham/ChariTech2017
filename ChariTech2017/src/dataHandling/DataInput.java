@@ -8,6 +8,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
@@ -22,6 +23,8 @@ public class DataInput {
 	private static List<Experience> experienceList = null;
 	private static List<Centre> centreList = null;
 	private static List<KnowledgeComponent> knowledgeComponentList = null;
+	
+	private static Map<Integer, Centre> CentreMap = null;
 	
 	
 	
@@ -142,6 +145,15 @@ public class DataInput {
 		return knowledgeComponentList;
 	}
 	
+	public static Map<Integer,Centre> getCentreMap() throws FileNotFoundException {
+		if (CentreMap == null) {
+			loadData();
+			normaliseData();
+		}
+		
+		return CentreMap;
+	}
+	
 	public static void normaliseData() {
 		HashMap<Integer,Learner> learnerMap = new HashMap<>();
 		HashMap<Integer,Centre> centreMap = new HashMap<>();
@@ -168,6 +180,8 @@ public class DataInput {
 			l.setCentre(c);
 			
 		}
+		
+		CentreMap = centreMap;
 		
 		//iterate over content
 		for (Content c : contentList) {

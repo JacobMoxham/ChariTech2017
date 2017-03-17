@@ -9,7 +9,17 @@ public class Experience {
 	private String recording_time;
 	private int latency;
 	
+	private Learner learner;
+	
 	public int getLearnerId() {
 		return learner_id;
+	}
+	
+	public Learner getLearner() {
+		return learner;
+	}
+	
+	public void setLearner(Learner l) {
+		learner = l;
 	}
 }

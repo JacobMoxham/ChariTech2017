@@ -156,6 +156,10 @@ public class DataInput {
 			
 		}
 		
+		for (Content c : contentList) {
+			contentMap.put(c.getQuestionId(), c);
+		}
+		
 		//set memory information
 		for (Memory m : memoryList) {
 			int learnerId = m.getLearnerID();
@@ -170,8 +174,11 @@ public class DataInput {
 			t.setLearner(learnerMap.get(learnerId));
 		}
 		
+		// set experiecne information
 		for (Experience e : experienceList) {
-			
+			int learnerId = e.getLearnerId();
+			learnerMap.get(learnerId).addExperience(e);
+			e.setLearner(learnerMap.get(learnerId));
 		}
 		
 		

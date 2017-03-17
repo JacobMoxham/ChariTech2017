@@ -9,6 +9,8 @@ public class Memory {
 	
 	private Learner learner;
 	
+	private KnowledgeComponent KC;
+	
 	public int getLearnerID() {
 		return learner_id;
 	}
@@ -31,6 +33,10 @@ public class Memory {
 	
 	public double getKnowledgeProbability() {
 		return knowledge_probability;
+	}
+	
+	public void setKnowledgeComponent(KnowledgeComponent kc) {
+		KC = kc;
 	}
 	
 }

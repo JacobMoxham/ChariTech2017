@@ -21,6 +21,7 @@ public class DataInput {
 	private static List<Memory> memoryList = null;
 	private static List<Experience> experienceList = null;
 	private static List<Centre> centreList = null;
+	private static List<KnowledgeComponent> knowledgeComponentList = null;
 	
 	
 	
@@ -132,11 +133,23 @@ public class DataInput {
 		return centreList;
 	}
 	
+	public static List<KnowledgeComponent> getKnowledgeComponentList() throws FileNotFoundException {
+		if (knowledgeComponentList == null) {
+			loadData();
+			normaliseData();
+		}
+		
+		return knowledgeComponentList;
+	}
+	
 	public static void normaliseData() {
 		HashMap<Integer,Learner> learnerMap = new HashMap<>();
 		HashMap<Integer,Centre> centreMap = new HashMap<>();
 		HashMap<Integer, Content> contentMap = new HashMap<>();
+		HashMap<Integer, KnowledgeComponent> kCMap = new HashMap<>();
+		
 		centreList = new ArrayList<>();
+		knowledgeComponentList = new ArrayList<>();
 		
 		
 		//iterate over learners
@@ -156,8 +169,20 @@ public class DataInput {
 			
 		}
 		
+		//iterate over content
 		for (Content c : contentList) {
 			contentMap.put(c.getQuestionId(), c);
+			
+			//set knowledge component information
+			if (!kCMap.containsKey(c.getVKCId())) {
+				KnowledgeComponent kc = new KnowledgeComponent(c.getVKCId());
+				kCMap.put(c.getVKCId(), kc);
+				knowledgeComponentList.add(kc);
+			}
+			
+			KnowledgeComponent kc = kCMap.get(c.getVKCId());
+			kc.addQuestion(c);
+			c.setKnowledgeComponent(kc);
 		}
 		
 		//set memory information
@@ -165,6 +190,10 @@ public class DataInput {
 			int learnerId = m.getLearnerID();
 			learnerMap.get(learnerId).addMemory(m);
 			m.setLearner(learnerMap.get(learnerId));
+			
+			KnowledgeComponent kc = kCMap.get(m.getVKCId());
+			kc.addMemory(m);
+			m.setKnowledgeComponent(kc);
 		}
 		
 		//set transaction information
@@ -174,11 +203,15 @@ public class DataInput {
 			t.setLearner(learnerMap.get(learnerId));
 		}
 		
-		// set experiecne information
+		// set experience information
 		for (Experience e : experienceList) {
 			int learnerId = e.getLearnerId();
 			learnerMap.get(learnerId).addExperience(e);
 			e.setLearner(learnerMap.get(learnerId));
+			
+			int questionId = e.getQuestionId();
+			contentMap.get(questionId).addExperience(e);
+			e.setContent(contentMap.get(questionId));
 		}
 		
 		

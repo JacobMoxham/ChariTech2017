@@ -39,16 +39,18 @@ public class GraphScreen extends Screen{
         //defining a series
         XYChart.Series series = new XYChart.Series();
         //populating the series with data
-        int i = 1;
+        int i = 0;
         double max = 0;
+        
         for(Double d : mData){
         	max = Math.max(d,  max);
         	System.out.println(i + " " + d);
-        	series.getData().add(new XYChart.Data(i * 10, d / 1000.0));
+        	series.getData().add(new XYChart.Data(i, d));
         	i++;
         }
-        lineChart.maxHeight(max);
-        lineChart.maxWidth(3);
+        
+        
+        lineChart.getData().add(series);
         setScene(new Scene(lineChart, getParent().getWidth(), getParent().getHeight()));
         
     }

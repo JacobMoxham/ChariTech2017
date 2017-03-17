@@ -101,7 +101,9 @@ public class Tutor {
 		switch (name) {
 			case SESSION_LENGTH:
 				for (Experience experience : data.getExperienceList()) {
-					experience.
+					if (learnerSet.contains(experience.getLearner()) {
+						
+					}
 				}
 				
 			default:

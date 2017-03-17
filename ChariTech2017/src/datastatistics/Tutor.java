@@ -34,8 +34,9 @@ public class Tutor {
 	//last month
 	Double getBusinessData (Statistic name) throws FileNotFoundException
 	{
-		if(name == Statistic.INCOME)
+		if(name.equals(Statistic.INCOME))
 		{
+			System.out.println("fafsafwa");
 			Double totalincome = 0.0;
 			for(Transaction tran: DataInput.getTransactionList())
 			{
@@ -150,13 +151,14 @@ public class Tutor {
 		
 	}
 	
-	public static void main(String args[])
+	public static void main(String args[]) throws FileNotFoundException
 	{
 		LocalDate firstDate = LocalDate.now();
 		LocalDate trandate = LocalDate.parse( "2016-03-22", DateTimeFormatter.ISO_DATE);
 		final long days = ChronoUnit.DAYS.between(firstDate, trandate);
 		System.out.println(days);
 		
-		Tutor koko = new Tutpr(
+		Tutor koko = new Tutor(1);
+		System.out.println(koko.getBusinessData(Statistic.INCOME));
 	}
 }

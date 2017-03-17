@@ -118,9 +118,6 @@ public class DataInput {
 	public static void main(String[] args) throws FileNotFoundException {
 		System.out.println(getCentreList().size());
 		
-		for (Experience e : experienceList) {
-			System.out.println(e.getStartTime());
-		}
 	}
 	
 	public static void loadData() throws FileNotFoundException {
@@ -237,10 +234,8 @@ public class DataInput {
 			
 			int questionId = e.getQuestionId();
 			
-			if (contentMap.containsKey(questionId)) {
-				contentMap.get(questionId).addExperience(e);
-				e.setContent(contentMap.get(questionId));
-			}
+			contentMap.get(questionId).addExperience(e);
+			e.setContent(contentMap.get(questionId));
 			
 			
 		}

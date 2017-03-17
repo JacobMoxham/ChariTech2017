@@ -27,7 +27,7 @@ public class Tutor {
 	private LocalDate date = LocalDate.now();
 	private Set<Learner> learnerSet;
 
-	Tutor (Integer id) throws FileNotFoundException
+	public Tutor (Integer id) throws FileNotFoundException
 	{
 		centre_id = id;
 		Date date = new Date();
@@ -36,7 +36,7 @@ public class Tutor {
 	}	
 	
 	//last month
-	Double getBusinessData (Statistic name) throws FileNotFoundException
+	public Double getBusinessData (Statistic name) throws FileNotFoundException
 	{
 		if(name == Statistic.INCOME)
 		{
@@ -121,7 +121,7 @@ public class Tutor {
 	}
 	
 	//last months - index 0 - the most recent month
-	List<Double> getAllBusinessData (Statistic name) throws FileNotFoundException
+	public List<Double> getAllBusinessData (Statistic name) throws FileNotFoundException
 	{
 		
 		if(name == Statistic.INCOME)
@@ -154,7 +154,7 @@ public class Tutor {
 		return null;
 	}
 	
-	Double getAdministrativeData (Statistic name) throws FileNotFoundException
+	public Double getAdministrativeData (Statistic name) throws FileNotFoundException
 	{
 		Double return_val;
 		
@@ -215,17 +215,17 @@ public class Tutor {
 		return return_val;
 	}
 	
-	List<Double> getAllAdministrativeData (Statistic name)
+	public List<Double> getAllAdministrativeData (Statistic name)
 	{
 		return null;
 		
 	}
-	Double getLearningData (Statistic name)
+	public Double getLearningData (Statistic name)
 	{
 		return null;
 		
 	}
-	List<Double> getAllLearningData (Statistic name)
+	public List<Double> getAllLearningData (Statistic name)
 	{
 		return null;
 		

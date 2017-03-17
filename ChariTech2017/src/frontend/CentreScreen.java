@@ -2,6 +2,7 @@ package frontend;
 
 import dataHandling.Centre;
 import dataHandling.DataInput;
+import datastatistics.Tutor;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.StackPane;
@@ -16,33 +17,34 @@ import java.util.List;
  */
 public class CentreScreen extends Screen{
     private int mCentreId;
+    private Tutor mTutor;
     public CentreScreen(Main parent, int id){
         super(parent);
         mCentreId = id;
+        try {
+            mTutor = new Tutor(id);
+        }catch(FileNotFoundException e){
+            System.out.println("File not found: " + e.getMessage());
+        }
     }
 
     @Override
     protected void generateScene(){
         StackPane frame = new StackPane();
 
-        List<DataCategory> categories = Arrays.asList(DataCategory.values());
+        List<MetricType> categories = Arrays.asList(MetricType.values());
 
-        for(DataCategory category : categories){
+        int start = 400;
+        for(MetricType category : categories){
             Button button = new CircleButton(category.toString(), 100);
             button.setOnAction(e -> buttonClicked(category));
             frame.getChildren().add(button);
         }
 
         setScene(new Scene(frame, getParent().getWidth(), getParent().getHeight()));
-
     }
 
-    public void buttonClicked(DataCategory category){
-        switch(category) {
-            case ADMIN:
-                getParent().pushScreen(new AdminScreen());
-
-                //todo: rest...
-        }
+    public void buttonClicked(MetricType category){
+        getParent().pushScreen(new MetricScreen(getParent(), mTutor, category));
     }
 }

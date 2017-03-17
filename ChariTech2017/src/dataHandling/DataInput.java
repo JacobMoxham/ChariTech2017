@@ -230,8 +230,13 @@ public class DataInput {
 			e.setLearner(learnerMap.get(learnerId));
 			
 			int questionId = e.getQuestionId();
-			contentMap.get(questionId).addExperience(e);
-			e.setContent(contentMap.get(questionId));
+			
+			if (contentMap.containsKey(questionId)) {
+				contentMap.get(questionId).addExperience(e);
+				e.setContent(contentMap.get(questionId));
+			}
+			
+			
 		}
 		
 		

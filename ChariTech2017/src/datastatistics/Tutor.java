@@ -32,13 +32,11 @@ public class Tutor {
 		centre_id = id;
 		Date date = new Date();
 		learnerSet = DataInput.getCentreMap().get(centre_id).getLearnerSet();
-		//System.out.println("size = " + learnerSet.size());
-		//System.out.println(learnerSet);
 		
 	}	
 	
 	//last month
-	Double getBusinessData (Statistic name) throws FileNotFoundException
+	public Double getBusinessData (Statistic name) throws FileNotFoundException
 	{
 		if(name.equals(Statistic.INCOME))
 		{
@@ -73,11 +71,12 @@ public class Tutor {
 				boolean thism = false, lastm = false;
 				for(Transaction tran: lea.getTransactionSet())
 				{
-					if(tran.getAmount() != -1) continue;
+					if(tran.getCredits() != -1 ) continue;
 					LocalDate trandate = LocalDate.parse( tran.getTimeStamp().substring(0, 10), DateTimeFormatter.ISO_DATE);
 					long days = ChronoUnit.DAYS.between(trandate, date);
 					if(days > 30 && days < 60) lastm = true;
 					if(days < 30) thism = true;
+					
 				}
 				if(thism == false && lastm == true) total += 1;
 			}
@@ -91,7 +90,7 @@ public class Tutor {
 				boolean buying = false;
 				for(Transaction tran:lea.getTransactionSet())
 				{
-					if(tran.getAmount() <= 1) continue;
+					if(tran.getAmount() <= 0) continue;
 					buying = true;
 				}
 				if(buying) total += 1;
@@ -102,7 +101,7 @@ public class Tutor {
 	}
 	
 	//last months - index 0 - the most recent month
-	List<Double> getAllBusinessData (Statistic name) throws FileNotFoundException
+	public List<Double> getAllBusinessData (Statistic name) throws FileNotFoundException
 	{
 		
 		if(name == Statistic.INCOME)
@@ -136,7 +135,7 @@ public class Tutor {
 		return null;
 	}
 	
-	Double getAdministrativeData (Statistic name) throws FileNotFoundException
+	public Double getAdministrativeData (Statistic name) throws FileNotFoundException
 	{
 		Double return_val;
 		
@@ -197,17 +196,17 @@ public class Tutor {
 		return return_val;
 	}
 	
-	List<Double> getAllAdministrativeData (Statistic name)
+	public List<Double> getAllAdministrativeData (Statistic name)
 	{
 		return null;
 		
 	}
-	Double getLearningData (Statistic name)
+	public Double getLearningData (Statistic name)
 	{
 		return null;
 		
 	}
-	List<Double> getAllLearningData (Statistic name)
+	public List<Double> getAllLearningData (Statistic name)
 	{
 		return null;
 		
@@ -218,9 +217,8 @@ public class Tutor {
 		LocalDate firstDate = LocalDate.now();
 		LocalDate trandate = LocalDate.parse( "2016-03-22", DateTimeFormatter.ISO_DATE);
 		final long days = ChronoUnit.DAYS.between(firstDate, trandate);
-		System.out.println(days);
-		
+
 		Tutor koko = new Tutor(1);
-		System.out.println(koko.getAllBusinessData(Statistic.INCOME));
+		System.out.println(koko.getBusinessData(Statistic.ATTRITION));
 	}
 }

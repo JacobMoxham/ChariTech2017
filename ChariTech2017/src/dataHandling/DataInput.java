@@ -205,9 +205,15 @@ public class DataInput {
 			learnerMap.get(learnerId).addMemory(m);
 			m.setLearner(learnerMap.get(learnerId));
 			
+			
 			KnowledgeComponent kc = kCMap.get(m.getVKCId());
-			kc.addMemory(m);
-			m.setKnowledgeComponent(kc);
+			
+			if (kc != null) {
+				kc.addMemory(m);
+				m.setKnowledgeComponent(kc);
+			}
+			
+			
 		}
 		
 		//set transaction information

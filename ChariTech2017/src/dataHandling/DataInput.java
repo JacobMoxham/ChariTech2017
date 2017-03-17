@@ -102,7 +102,7 @@ public class DataInput {
 		if (experienceList == null) {
 			Gson gson = new Gson();
 			
-			BufferedReader br = new BufferedReader(new FileReader(Paths.get("json/memories.json").toFile()));
+			BufferedReader br = new BufferedReader(new FileReader(Paths.get("json/experiences.json").toFile()));
 			JsonReader reader = new JsonReader(br);
 			//reader.setLenient(true);
 			
@@ -117,6 +117,7 @@ public class DataInput {
 	
 	public static void main(String[] args) throws FileNotFoundException {
 		System.out.println(getCentreList().size());
+		
 	}
 	
 	public static void loadData() throws FileNotFoundException {
@@ -205,13 +206,15 @@ public class DataInput {
 			learnerMap.get(learnerId).addMemory(m);
 			m.setLearner(learnerMap.get(learnerId));
 			
+			if (!kCMap.containsKey(m.getVKCId())) {
+				KnowledgeComponent kc = new KnowledgeComponent(m.getVKCId());
+				kCMap.put(m.getVKCId(), kc);
+				knowledgeComponentList.add(kc);
+			}
 			
 			KnowledgeComponent kc = kCMap.get(m.getVKCId());
-			
-			if (kc != null) {
-				kc.addMemory(m);
-				m.setKnowledgeComponent(kc);
-			}
+			kc.addMemory(m);
+			m.setKnowledgeComponent(kc);
 			
 			
 		}
@@ -231,10 +234,8 @@ public class DataInput {
 			
 			int questionId = e.getQuestionId();
 			
-			if (contentMap.containsKey(questionId)) {
-				contentMap.get(questionId).addExperience(e);
-				e.setContent(contentMap.get(questionId));
-			}
+			contentMap.get(questionId).addExperience(e);
+			e.setContent(contentMap.get(questionId));
 			
 			
 		}

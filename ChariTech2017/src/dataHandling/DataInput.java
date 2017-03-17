@@ -112,9 +112,7 @@ public class DataInput {
 	}
 	
 	public static void main(String[] args) throws FileNotFoundException {
-		loadData();
-		normaliseData();
-		System.out.println(centreList.size());
+		System.out.println(getCentreList().size());
 	}
 	
 	public static void loadData() throws FileNotFoundException {
@@ -136,7 +134,8 @@ public class DataInput {
 	
 	public static void normaliseData() {
 		HashMap<Integer,Learner> learnerMap = new HashMap<>();
-		HashMap<Integer,Centre> CentreMap = new HashMap<>();
+		HashMap<Integer,Centre> centreMap = new HashMap<>();
+		HashMap<Integer, Content> contentMap = new HashMap<>();
 		centreList = new ArrayList<>();
 		
 		
@@ -145,13 +144,13 @@ public class DataInput {
 			learnerMap.put(l.getId(), l);
 			
 			//set centre information
-			if (!CentreMap.containsKey(l.getCentreId())) {
+			if (!centreMap.containsKey(l.getCentreId())) {
 				Centre newCentre = new Centre(l.getCentreId());
-				CentreMap.put(l.getCentreId(), newCentre);
+				centreMap.put(l.getCentreId(), newCentre);
 				centreList.add(newCentre);
 			}
 			
-			Centre c = CentreMap.get(l.getCentreId());
+			Centre c = centreMap.get(l.getCentreId());
 			c.addLearner(l);
 			l.setCentre(c);
 			
@@ -170,6 +169,12 @@ public class DataInput {
 			learnerMap.get(learnerId).addTransaction(t);
 			t.setLearner(learnerMap.get(learnerId));
 		}
+		
+		for (Experience e : experienceList) {
+			
+		}
+		
+		
 		
 		
 		

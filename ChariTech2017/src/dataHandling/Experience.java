@@ -10,6 +10,7 @@ public class Experience {
 	private int latency;
 	
 	private Learner learner;
+	private Content content;
 	
 	public int getLearnerId() {
 		return learner_id;
@@ -21,5 +22,17 @@ public class Experience {
 	
 	public void setLearner(Learner l) {
 		learner = l;
+	}
+	
+	public int getQuestionId() {
+		return question_id;
+	}
+	
+	public Content getContent() {
+		return content;
+	}
+	
+	public void setContent(Content c) {
+		content = c;
 	}
 }

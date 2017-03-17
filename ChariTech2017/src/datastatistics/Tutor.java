@@ -29,20 +29,22 @@ public class Tutor {
 	{
 		centre_id = id;
 		Date date = new Date();
-		learnerSet = DataInput.getCentreMap().get(centre_id).getLearnerSet();	//how to fix that???
+		learnerSet = DataInput.getCentreMap().get(centre_id).getLearnerSet();
 		
 	}	
 	
 	//last month
-	Double getBusinessData (Statistic name) throws FileNotFoundException
+	public Double getBusinessData (Statistic name) throws FileNotFoundException
 	{
-		if(name == Statistic.INCOME)
+		if(name.equals(Statistic.INCOME))
 		{
+			
 			Double totalincome = 0.0;
 			for(Transaction tran: DataInput.getTransactionList())
 			{
-				if(!learnerSet.contains(tran.getLearnerId())) continue;
-				LocalDate trandate = LocalDate.parse( tran.getTimeStamp(), DateTimeFormatter.ISO_DATE);
+				//System.out.println(tran.getLearnerId());
+				if(!learnerSet.contains(tran.getLearner())) continue;
+				LocalDate trandate = LocalDate.parse( tran.getTimeStamp().substring(0, 10), DateTimeFormatter.ISO_DATE);
 				long days = ChronoUnit.DAYS.between(trandate, date);
 				if(days < 30) totalincome += tran.getAmount();	
 			}
@@ -53,7 +55,7 @@ public class Tutor {
 			Double total = 0.0;
 			for(Learner lea: learnerSet)
 			{
-				LocalDate joindate = LocalDate.parse( lea.getDateJoined(), DateTimeFormatter.ISO_DATE);
+				LocalDate joindate = LocalDate.parse( lea.getDateJoined().substring(0, 10), DateTimeFormatter.ISO_DATE);
 				long days = ChronoUnit.DAYS.between(joindate, date);
 				if(days < 30) total += 1;
 			}
@@ -64,34 +66,15 @@ public class Tutor {
 			Double total = 0.0;
 			for(Learner lea: learnerSet)
 			{
-				if(lea.getCentreId() != centre_id) continue;
 				boolean thism = false, lastm = false;
 				for(Transaction tran: lea.getTransactionSet())
 				{
-					if(tran.getAmount() != -1) continue;
-					LocalDate trandate = LocalDate.parse( tran.getTimeStamp(), DateTimeFormatter.ISO_DATE);
+					if(tran.getCredits() != -1 ) continue;
+					LocalDate trandate = LocalDate.parse( tran.getTimeStamp().substring(0, 10), DateTimeFormatter.ISO_DATE);
 					long days = ChronoUnit.DAYS.between(trandate, date);
 					if(days > 30 && days < 60) lastm = true;
 					if(days < 30) thism = true;
-				}
-				if(thism == false && lastm == true) total += 1;
-			}
-			return total;
-		}
-		if(name == Statistic.ATTRITION)
-		{
-			Double total = 0.0;
-			for(Learner lea: learnerSet)
-			{
-				if(lea.getCentreId() != centre_id) continue;
-				boolean thism = false, lastm = false;
-				for(Transaction tran: lea.getTransactionSet())
-				{
-					if(tran.getAmount() != -1) continue;
-					LocalDate trandate = LocalDate.parse( tran.getTimeStamp(), DateTimeFormatter.ISO_DATE);
-					long days = ChronoUnit.DAYS.between(trandate, date);
-					if(days > 30 && days < 60) lastm = true;
-					if(days < 30) thism = true;
+					
 				}
 				if(thism == false && lastm == true) total += 1;
 			}
@@ -102,24 +85,21 @@ public class Tutor {
 			Double total = 0.0;
 			for(Learner lea: learnerSet)
 			{
-				boolean thism = false, lastm = false;
+				boolean buying = false;
 				for(Transaction tran:lea.getTransactionSet())
 				{
-					if(tran.getAmount() != -1) continue;
-					LocalDate trandate = LocalDate.parse( tran.getTimeStamp(), DateTimeFormatter.ISO_DATE);
-					long days = ChronoUnit.DAYS.between(trandate, date);
-					if(days > 30 && days < 60) lastm = true;
-					if(days < 30) thism = true;
+					if(tran.getAmount() <= 0) continue;
+					buying = true;
 				}
-				if(thism == false && lastm == true) total += 1;
+				if(buying) total += 1;
 			}
-			return total;
+			return total/learnerSet.size();
 		}
 		return null;
 	}
 	
 	//last months - index 0 - the most recent month
-	List<Double> getAllBusinessData (Statistic name) throws FileNotFoundException
+	public List<Double> getAllBusinessData (Statistic name) throws FileNotFoundException
 	{
 		
 		if(name == Statistic.INCOME)
@@ -127,12 +107,13 @@ public class Tutor {
 			ArrayList <Double> total = new ArrayList <Double> ();
 			for(Transaction tran: DataInput.getTransactionList())
 			{
-				if(!learnerSet.contains(tran.getLearnerId())) continue;
-				LocalDate trandate = LocalDate.parse( tran.getTimeStamp(), DateTimeFormatter.ISO_DATE);
+				if(!learnerSet.contains(tran.getLearner())) continue;
+				if(tran.getAmount() <= 1) continue;
+				LocalDate trandate = LocalDate.parse( tran.getTimeStamp().substring(0, 10), DateTimeFormatter.ISO_DATE);
 				long days = ChronoUnit.DAYS.between(trandate, date);
 				int num = (int) (days/30);
-				while(total.size() < num) total.add(0.0);
-				total.set(num, total.get( num) + tran.getAmount());
+				while(total.size() <= num) total.add(0.0);
+				total.set(num, total.get(num) + tran.getAmount());
 			}
 			return total;
 		}
@@ -141,10 +122,10 @@ public class Tutor {
 			ArrayList <Double> total = new ArrayList <Double> ();
 			for(Learner lea: learnerSet)
 			{
-				LocalDate joindate = LocalDate.parse( lea.getDateJoined(), DateTimeFormatter.ISO_DATE);
+				LocalDate joindate = LocalDate.parse( lea.getDateJoined().substring(0, 10), DateTimeFormatter.ISO_DATE);
 				long days = ChronoUnit.DAYS.between(joindate, date);
 				int num = (int) (days/30);
-				while(total.size() < num) total.add(0.0);
+				while(total.size() <= num) total.add(0.0);
 				total.set(num, total.get(num)+1);
 			}
 			return total;
@@ -152,7 +133,7 @@ public class Tutor {
 		return null;
 	}
 	
-	Double getAdministrativeData (Statistic name) throws FileNotFoundException
+	public Double getAdministrativeData (Statistic name) throws FileNotFoundException
 	{
 		Double return_val;
 		
@@ -289,22 +270,24 @@ public class Tutor {
 	}
 		
 	}
-	Double getLearningData (Statistic name)
+	public Double getLearningData (Statistic name)
 	{
 		return null;
 		
 	}
-	List<Double> getAllLearningData (Statistic name)
+	public List<Double> getAllLearningData (Statistic name)
 	{
 		return null;
 		
 	}
 	
-	public static void main(String args[])
+	public static void main(String args[]) throws FileNotFoundException
 	{
 		LocalDate firstDate = LocalDate.now();
 		LocalDate trandate = LocalDate.parse( "2016-03-22", DateTimeFormatter.ISO_DATE);
 		final long days = ChronoUnit.DAYS.between(firstDate, trandate);
-		System.out.println(days);
+
+		Tutor koko = new Tutor(1);
+		System.out.println(koko.getBusinessData(Statistic.ATTRITION));
 	}
 }

@@ -205,13 +205,15 @@ public class DataInput {
 			learnerMap.get(learnerId).addMemory(m);
 			m.setLearner(learnerMap.get(learnerId));
 			
+			if (!kCMap.containsKey(m.getVKCId())) {
+				KnowledgeComponent kc = new KnowledgeComponent(m.getVKCId());
+				kCMap.put(m.getVKCId(), kc);
+				knowledgeComponentList.add(kc);
+			}
 			
 			KnowledgeComponent kc = kCMap.get(m.getVKCId());
-			
-			if (kc != null) {
-				kc.addMemory(m);
-				m.setKnowledgeComponent(kc);
-			}
+			kc.addMemory(m);
+			m.setKnowledgeComponent(kc);
 			
 			
 		}

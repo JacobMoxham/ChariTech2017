@@ -9,6 +9,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import javax.swing.text.DateFormatter;
 
@@ -21,12 +22,16 @@ public class Tutor {
 	private Integer centre_id;
 	private DataInput data;
 	private LocalDate date = LocalDate.now();
+	private Set<Learner> learnerSet;
 
 	Tutor (Integer id)
 	{
 		centre_id = id;
 		data = new DataInput();
 		Date date = new Date();
+		learnerSet = new Centre(centre_id).getLearnerSet();
+		
+		
 	}	
 	
 	//last month
@@ -50,6 +55,25 @@ public class Tutor {
 			ArrayList <Learner> learners = new ArrayList <Learner> (data.getLearnerList());
 			for(Learner lea: learners)
 			{
+				LocalDate joindate = LocalDate.parse( lea.getDateJoined(), DateTimeFormatter.ISO_DATE);
+				long days = ChronoUnit.DAYS.between(joindate, date);
+				if(days < 30) total += 1;
+			}
+			return total;
+		}
+		if(name == Statistic.ATTRITION)
+		{
+			Double total = 0.0;
+			ArrayList <Learner> learners = new ArrayList <Learner> (data.getLearnerList());
+			for(Learner lea: learners)
+			{
+				Set <Transaction> trans = lea.getMemorySet();
+				for(Transaction tran: trans)
+				{
+					LocalDate trandate = LocalDate.parse( tran.getTimeStamp(), DateTimeFormatter.ISO_DATE);
+					long days = ChronoUnit.DAYS.between(trandate, date);
+					if(days < 30) totalincome += tran.getAmount();	
+				}
 				LocalDate joindate = LocalDate.parse( lea.getDateJoined(), DateTimeFormatter.ISO_DATE);
 				long days = ChronoUnit.DAYS.between(joindate, date);
 				if(days < 30) total += 1;
@@ -87,7 +111,7 @@ public class Tutor {
 				long days = ChronoUnit.DAYS.between(joindate, date);
 				int num = (int) (days/30);
 				while(total.size() < num) total.add(0.0);
-				total.set(num, total.get( num)+1);
+				total.set(num, total.get(num)+1);
 			}
 			return total;
 		}

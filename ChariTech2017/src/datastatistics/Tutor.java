@@ -4,11 +4,15 @@ import java.io.FileNotFoundException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javax.swing.text.DateFormatter;
@@ -124,11 +128,53 @@ public class Tutor {
 		
 		switch (name) {
 			case SESSION_LENGTH:
+				// mapping number of days since current date to list of (minimum start time, maximum end time)
+				Map<Long, List<LocalTime>> dayStartTimes = new HashMap<>();
+				
 				for (Experience experience : data.getExperienceList()) {
-					if (learnerSet.contains(experience.getLearner()) {
+					// check if experience is at the correct centre by cross-referencing the learner with the centre set
+					if (learnerSet.contains(experience.getLearner())) {
+						// check if experience is within last month
+						LocalDateTime startDateTime = LocalDateTime.parse(experience.getStartTime());
 						
+						long days = ChronoUnit.DAYS.between(startDateTime, date);
+						
+						if (days < 30) {
+							LocalTime startTime = startDateTime.toLocalTime();
+							LocalTime endTime = startTime.plusMinutes(experience.getLatency());
+							
+							// initialise list
+							dayStartTimes.putIfAbsent(days, new ArrayList<LocalTime>());
+							
+							if (dayStartTimes.get(days).isEmpty()) {
+								dayStartTimes.get(days).add(startTime);
+								dayStartTimes.get(days).add(endTime);
+							} else {
+								// ASSERT: both the start time and end time in the list are valid local times
+								// if minimum start time for that day, update
+								if (startTime.compareTo(dayStartTimes.get(days).get(0)) == -1) {
+									dayStartTimes.get(days).set(0, startTime);
+								}
+								
+								// if maximum (start time + latency) for that day, update
+								if (endTime.compareTo(dayStartTimes.get(days).get(1)) == 1) {
+									dayStartTimes.get(days).set(1, endTime);
+								}
+							}
+						}
 					}
 				}
+				
+				// go through all data and calculate actual session length for each day, then average
+				int totalSessionTime = 0;
+				
+				for (List<LocalTime> startEndTimes : dayStartTimes.values()) {
+					// calculate session length
+					totalSessionTime += ChronoUnit.MINUTES.between(startEndTimes.get(0), startEndTimes.get(1));
+				}
+				
+				// return average session length given in minutes
+				return_val = (double) totalSessionTime / dayStartTimes.size();
 				
 			default:
 				return_val = null;

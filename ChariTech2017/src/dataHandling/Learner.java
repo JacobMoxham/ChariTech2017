@@ -54,6 +54,10 @@ public class Learner {
 		return mother_occupation;
 	}
 	
+	public int getCentreId() {
+		return centre_id;
+	}
+	
 	public void addMemory(Memory m) {
 		memorySet.add(m);
 	}
@@ -65,11 +69,7 @@ public class Learner {
 	public void addExperience(Experience e) {
 		experienceSet.add(e);
 	}
-	
-	public int getCentreId() {
-		return centre_id;
-	}
-	
+
 	public void setCentre(Centre c) {
 		learnerCentre = c;
 	}
@@ -78,8 +78,16 @@ public class Learner {
 		return learnerCentre;
 	}
 	
+	public Set<Memory> getMemorySet() {
+		return memorySet;
+	}
 	
+	public Set<Transaction> getTransactionSet() {
+		return transactionSet;
+	}
 	
-	
+	public Set<Experience> getExperienceSet() {
+		return experienceSet;
+	}
 	
 }

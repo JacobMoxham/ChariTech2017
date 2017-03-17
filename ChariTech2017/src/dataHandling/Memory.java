@@ -9,12 +9,42 @@ public class Memory {
 	
 	private Learner learner;
 	
+	private KnowledgeComponent KC;
+	
 	public int getLearnerID() {
 		return learner_id;
 	}
 	
 	public void setLearner(Learner l) {
 		learner = l;
+	}
+	
+	public int getVKCId() {
+		return vkc_id;
+	}
+	
+	public String getLastSeen() {
+		return last_seen;
+	}
+	
+	public int getNumberSeen() {
+		return number_seen;
+	}
+	
+	public double getKnowledgeProbability() {
+		return knowledge_probability;
+	}
+	
+	public void setKnowledgeComponent(KnowledgeComponent kc) {
+		KC = kc;
+	}
+	
+	public Learner getLearner() {
+		return learner;
+	}
+	
+	public KnowledgeComponent getKnowledgeComponent() {
+		return KC;
 	}
 	
 }

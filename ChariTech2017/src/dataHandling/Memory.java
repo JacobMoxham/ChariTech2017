@@ -39,4 +39,12 @@ public class Memory {
 		KC = kc;
 	}
 	
+	public Learner getLearner() {
+		return learner;
+	}
+	
+	public KnowledgeComponent getKnowledgeComponent() {
+		return KC;
+	}
+	
 }

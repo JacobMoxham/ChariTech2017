@@ -1,5 +1,6 @@
 package frontend;
 
+import datastatistics.Statistic;
 import datastatistics.Tutor;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -7,6 +8,7 @@ import javafx.scene.layout.StackPane;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -22,6 +24,23 @@ public class MetricScreen extends Screen {
         super(parent);
         mTutor = tutor;
         mType = type;
+
+        data = new ArrayList<DataStruct>();
+        mMetrics = new ArrayList<Metric>();
+
+        switch(type){
+            case Admin:
+                data.add(new DataStruct("Session length", Statistic.SESSION_LENGTH, true));
+                break;
+            case Business:
+                data.add(new DataStruct("Monthly income", Statistic.INCOME, true));
+                data.add(new DataStruct("New customers", Statistic.NEW_CUSTOMERS, true));
+                data.add(new DataStruct("Attrition", Statistic.ATTRITION, false));
+                data.add(new DataStruct("Conversion rate", Statistic.CONVERSION_RATE, false));
+        }
+
+
+
         for(DataStruct d : data){
             boolean t = d.getHasDateData();
             List<Double> dataByMonth = null;

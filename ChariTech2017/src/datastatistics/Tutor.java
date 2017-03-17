@@ -29,7 +29,7 @@ public class Tutor {
 		centre_id = id;
 		data = new DataInput();
 		Date date = new Date();
-		learnerSet = new Centre(centre_id).getLearnerSet();	
+		learnerSet = new Centre(centre_id).getLearnerSet();	//how to fix that???
 		
 	}	
 	
@@ -39,8 +39,7 @@ public class Tutor {
 		if(name == Statistic.INCOME)
 		{
 			Double totalincome = 0.0;
-			ArrayList <Transaction> trans = new ArrayList <Transaction> (data.getTransactionList());
-			for(Transaction tran: trans)
+			for(Transaction tran: data.getTransactionList())
 			{
 				if(!learnerSet.contains(tran.getLearnerId())) continue;
 				LocalDate trandate = LocalDate.parse( tran.getTimeStamp(), DateTimeFormatter.ISO_DATE);
@@ -52,8 +51,7 @@ public class Tutor {
 		if(name == Statistic.NEW_CUSTOMERS)
 		{
 			Double total = 0.0;
-			ArrayList <Learner> learners = new ArrayList <Learner> (learnerSet);
-			for(Learner lea: learners)
+			for(Learner lea: learnerSet)
 			{
 				LocalDate joindate = LocalDate.parse( lea.getDateJoined(), DateTimeFormatter.ISO_DATE);
 				long days = ChronoUnit.DAYS.between(joindate, date);
@@ -64,13 +62,11 @@ public class Tutor {
 		if(name == Statistic.ATTRITION)
 		{
 			Double total = 0.0;
-			ArrayList <Learner> learners = new ArrayList <Learner> (learnerSet);
-			for(Learner lea: learners)
+			for(Learner lea: learnerSet)
 			{
 				if(lea.getCentreId() != centre_id) continue;
-				Set <Transaction> trans = lea.getTransactionSet();
 				boolean thism = false, lastm = false;
-				for(Transaction tran: trans)
+				for(Transaction tran: lea.getTransactionSet())
 				{
 					if(tran.getAmount() != -1) continue;
 					LocalDate trandate = LocalDate.parse( tran.getTimeStamp(), DateTimeFormatter.ISO_DATE);
@@ -85,13 +81,29 @@ public class Tutor {
 		if(name == Statistic.ATTRITION)
 		{
 			Double total = 0.0;
-			ArrayList <Learner> learners = new ArrayList <Learner> (learnerSet);
-			for(Learner lea: learners)
+			for(Learner lea: learnerSet)
 			{
 				if(lea.getCentreId() != centre_id) continue;
-				Set <Transaction> trans = lea.getTransactionSet();
 				boolean thism = false, lastm = false;
-				for(Transaction tran: trans)
+				for(Transaction tran: lea.getTransactionSet())
+				{
+					if(tran.getAmount() != -1) continue;
+					LocalDate trandate = LocalDate.parse( tran.getTimeStamp(), DateTimeFormatter.ISO_DATE);
+					long days = ChronoUnit.DAYS.between(trandate, date);
+					if(days > 30 && days < 60) lastm = true;
+					if(days < 30) thism = true;
+				}
+				if(thism == false && lastm == true) total += 1;
+			}
+			return total;
+		}
+		if(name == Statistic.CONVERSION_RATE)
+		{
+			Double total = 0.0;
+			for(Learner lea: learnerSet)
+			{
+				boolean thism = false, lastm = false;
+				for(Transaction tran:lea.getTransactionSet())
 				{
 					if(tran.getAmount() != -1) continue;
 					LocalDate trandate = LocalDate.parse( tran.getTimeStamp(), DateTimeFormatter.ISO_DATE);
@@ -113,8 +125,7 @@ public class Tutor {
 		if(name == Statistic.INCOME)
 		{
 			ArrayList <Double> total = new ArrayList <Double> ();
-			ArrayList <Transaction> trans = new ArrayList <Transaction> (data.getTransactionList());
-			for(Transaction tran: trans)
+			for(Transaction tran: data.getTransactionList())
 			{
 				if(!learnerSet.contains(tran.getLearnerId())) continue;
 				LocalDate trandate = LocalDate.parse( tran.getTimeStamp(), DateTimeFormatter.ISO_DATE);
@@ -128,8 +139,7 @@ public class Tutor {
 		if(name == Statistic.NEW_CUSTOMERS)
 		{
 			ArrayList <Double> total = new ArrayList <Double> ();
-			ArrayList <Learner> learners = new ArrayList <Learner> (learnerSet);
-			for(Learner lea: learners)
+			for(Learner lea: learnerSet)
 			{
 				LocalDate joindate = LocalDate.parse( lea.getDateJoined(), DateTimeFormatter.ISO_DATE);
 				long days = ChronoUnit.DAYS.between(joindate, date);

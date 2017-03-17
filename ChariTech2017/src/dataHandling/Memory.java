@@ -12,4 +12,9 @@ public class Memory {
 	public int getLearnerID() {
 		return learner_id;
 	}
+	
+	public void setLearner(Learner l) {
+		learner = l;
+	}
+	
 }

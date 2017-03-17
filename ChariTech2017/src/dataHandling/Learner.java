@@ -17,6 +17,7 @@ public class Learner {
 	private int centre_id;
 	
 	private HashSet<Memory> memorySet = new HashSet<>();
+	private HashSet<Transaction> transactionSet = new HashSet<>();
 	private Centre learnerCentre;
 	
 	
@@ -26,6 +27,10 @@ public class Learner {
 	
 	public void addMemory(Memory m) {
 		memorySet.add(m);
+	}
+	
+	public void addTransaction(Transaction t) {
+		transactionSet.add(t);
 	}
 	
 	public Set<Memory> getMemories() {

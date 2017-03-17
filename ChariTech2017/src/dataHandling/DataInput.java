@@ -161,9 +161,18 @@ public class DataInput {
 		for (Memory m : memoryList) {
 			int learnerId = m.getLearnerID();
 			learnerMap.get(learnerId).addMemory(m);
+			m.setLearner(learnerMap.get(learnerId));
 		}
 		
-		//System.out.println(learnerList.get(0).getMemories());
+		//set transaction information
+		for (Transaction t : transactionList) {
+			int learnerId = t.getLearnerId();
+			learnerMap.get(learnerId).addTransaction(t);
+			t.setLearner(learnerMap.get(learnerId));
+		}
+		
+		
+		
 		
 		
 		

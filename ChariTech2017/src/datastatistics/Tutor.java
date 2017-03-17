@@ -32,6 +32,8 @@ public class Tutor {
 		centre_id = id;
 		Date date = new Date();
 		learnerSet = DataInput.getCentreMap().get(centre_id).getLearnerSet();
+		//System.out.println("size = " + learnerSet.size());
+		//System.out.println(learnerSet);
 		
 	}	
 	
@@ -40,12 +42,13 @@ public class Tutor {
 	{
 		if(name.equals(Statistic.INCOME))
 		{
-			System.out.println("fafsafwa");
+			
 			Double totalincome = 0.0;
 			for(Transaction tran: DataInput.getTransactionList())
 			{
-				if(!learnerSet.contains(tran.getLearnerId())) continue;
-				LocalDate trandate = LocalDate.parse( tran.getTimeStamp(), DateTimeFormatter.ISO_DATE);
+				//System.out.println(tran.getLearnerId());
+				if(!learnerSet.contains(tran.getLearner())) continue;
+				LocalDate trandate = LocalDate.parse( tran.getTimeStamp().substring(0, 10), DateTimeFormatter.ISO_DATE);
 				long days = ChronoUnit.DAYS.between(trandate, date);
 				if(days < 30) totalincome += tran.getAmount();	
 			}
@@ -56,7 +59,7 @@ public class Tutor {
 			Double total = 0.0;
 			for(Learner lea: learnerSet)
 			{
-				LocalDate joindate = LocalDate.parse( lea.getDateJoined(), DateTimeFormatter.ISO_DATE);
+				LocalDate joindate = LocalDate.parse( lea.getDateJoined().substring(0, 10), DateTimeFormatter.ISO_DATE);
 				long days = ChronoUnit.DAYS.between(joindate, date);
 				if(days < 30) total += 1;
 			}
@@ -71,7 +74,7 @@ public class Tutor {
 				for(Transaction tran: lea.getTransactionSet())
 				{
 					if(tran.getAmount() != -1) continue;
-					LocalDate trandate = LocalDate.parse( tran.getTimeStamp(), DateTimeFormatter.ISO_DATE);
+					LocalDate trandate = LocalDate.parse( tran.getTimeStamp().substring(0, 10), DateTimeFormatter.ISO_DATE);
 					long days = ChronoUnit.DAYS.between(trandate, date);
 					if(days > 30 && days < 60) lastm = true;
 					if(days < 30) thism = true;
@@ -107,12 +110,12 @@ public class Tutor {
 			ArrayList <Double> total = new ArrayList <Double> ();
 			for(Transaction tran: DataInput.getTransactionList())
 			{
-				if(!learnerSet.contains(tran.getLearnerId())) continue;
+				if(!learnerSet.contains(tran.getLearner())) continue;
 				if(tran.getAmount() <= 1) continue;
-				LocalDate trandate = LocalDate.parse( tran.getTimeStamp(), DateTimeFormatter.ISO_DATE);
+				LocalDate trandate = LocalDate.parse( tran.getTimeStamp().substring(0, 10), DateTimeFormatter.ISO_DATE);
 				long days = ChronoUnit.DAYS.between(trandate, date);
 				int num = (int) (days/30);
-				while(total.size() < num) total.add(0.0);
+				while(total.size() <= num) total.add(0.0);
 				total.set(num, total.get(num) + tran.getAmount());
 			}
 			return total;
@@ -122,10 +125,10 @@ public class Tutor {
 			ArrayList <Double> total = new ArrayList <Double> ();
 			for(Learner lea: learnerSet)
 			{
-				LocalDate joindate = LocalDate.parse( lea.getDateJoined(), DateTimeFormatter.ISO_DATE);
+				LocalDate joindate = LocalDate.parse( lea.getDateJoined().substring(0, 10), DateTimeFormatter.ISO_DATE);
 				long days = ChronoUnit.DAYS.between(joindate, date);
 				int num = (int) (days/30);
-				while(total.size() < num) total.add(0.0);
+				while(total.size() <= num) total.add(0.0);
 				total.set(num, total.get(num)+1);
 			}
 			return total;
@@ -218,6 +221,6 @@ public class Tutor {
 		System.out.println(days);
 		
 		Tutor koko = new Tutor(1);
-		System.out.println(koko.getBusinessData(Statistic.INCOME));
+		System.out.println(koko.getAllBusinessData(Statistic.INCOME));
 	}
 }

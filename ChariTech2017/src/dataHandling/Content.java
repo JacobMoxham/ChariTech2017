@@ -14,9 +14,25 @@ public class Content {
 	
 	private Set<Experience> experienceSet = new HashSet<>();
 	
-	
 	public int getQuestionId() {
 		return question_id;
+	}
+	
+	public int getTemplateID() {
+		return template_id;
+	}
+	
+	
+	public int getVKCId() {
+		return vocabularyknowledgecomponent_id;
+	}
+	
+	public int getChallengeId() {
+		return challenge_id;
+	}
+	
+	public int getUnitId() {
+		return unit_id;
 	}
 	
 	public void addExperience(Experience e) {
@@ -27,7 +43,13 @@ public class Content {
 		KC = kc;
 	}
 	
-	public int getVKCId() {
-		return vocabularyknowledgecomponent_id;
+	public KnowledgeComponent getKnowledgeComponent() {
+		return KC;
 	}
+	
+	public Set<Experience> getExperienceSet() {
+		return experienceSet;
+	}
+	
+	
 }

@@ -17,4 +17,20 @@ public class Memory {
 		learner = l;
 	}
 	
+	public int getVKCId() {
+		return vkc_id;
+	}
+	
+	public String getLastSeen() {
+		return last_seen;
+	}
+	
+	public int getNumberSeen() {
+		return number_seen;
+	}
+	
+	public double getKnowledgeProbability() {
+		return knowledge_probability;
+	}
+	
 }

@@ -8,4 +8,8 @@ public class Experience {
 	private String start_time;
 	private String recording_time;
 	private int latency;
+	
+	public int getLearnerId() {
+		return learner_id;
+	}
 }

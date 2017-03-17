@@ -6,4 +6,9 @@ public class Content {
 	private int vocabularyknowledgecomponent_id;
 	private int challenge_id;
 	private int unit_id;
+	
+	
+	public int getQuestionId() {
+		return question_id;
+	}
 }

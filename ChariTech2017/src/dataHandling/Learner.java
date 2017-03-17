@@ -18,11 +18,40 @@ public class Learner {
 	
 	private HashSet<Memory> memorySet = new HashSet<>();
 	private HashSet<Transaction> transactionSet = new HashSet<>();
+	private HashSet<Experience> experienceSet = new HashSet<>();
 	private Centre learnerCentre;
 	
 	
 	public int getId() {
 		return id;
+	}
+	
+	public String getDateJoined() {
+		return date_joined;
+	}
+	
+	public String getLanguage() {
+		return language;
+	}
+	
+	public String getGender() {
+		return gender;
+	}
+	
+	public String getDOB() {
+		return date_of_birth;
+	}
+	
+	public int getGradeAtRegistration() {
+		return grade_at_registration;
+	}
+	
+	public String getFatherOccupation() {
+		return father_occupation;
+	}
+	
+	public String getMotherOcccupation() {
+		return mother_occupation;
 	}
 	
 	public void addMemory(Memory m) {
@@ -33,8 +62,8 @@ public class Learner {
 		transactionSet.add(t);
 	}
 	
-	public Set<Memory> getMemories() {
-		return memorySet;
+	public void addExperience(Experience e) {
+		experienceSet.add(e);
 	}
 	
 	public int getCentreId() {
@@ -44,6 +73,12 @@ public class Learner {
 	public void setCentre(Centre c) {
 		learnerCentre = c;
 	}
+	
+	public Centre getCentre() {
+		return learnerCentre;
+	}
+	
+	
 	
 	
 	

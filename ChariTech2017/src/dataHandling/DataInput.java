@@ -205,9 +205,17 @@ public class DataInput {
 			learnerMap.get(learnerId).addMemory(m);
 			m.setLearner(learnerMap.get(learnerId));
 			
+			if (!kCMap.containsKey(m.getVKCId())) {
+				KnowledgeComponent kc = new KnowledgeComponent(m.getVKCId());
+				kCMap.put(m.getVKCId(), kc);
+				knowledgeComponentList.add(kc);
+			}
+			
 			KnowledgeComponent kc = kCMap.get(m.getVKCId());
 			kc.addMemory(m);
 			m.setKnowledgeComponent(kc);
+			
+			
 		}
 		
 		//set transaction information
@@ -224,8 +232,13 @@ public class DataInput {
 			e.setLearner(learnerMap.get(learnerId));
 			
 			int questionId = e.getQuestionId();
-			contentMap.get(questionId).addExperience(e);
-			e.setContent(contentMap.get(questionId));
+			
+			if (contentMap.containsKey(questionId)) {
+				contentMap.get(questionId).addExperience(e);
+				e.setContent(contentMap.get(questionId));
+			}
+			
+			
 		}
 		
 		

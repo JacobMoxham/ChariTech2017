@@ -94,10 +94,21 @@ public class Tutor {
 		return null;
 	}
 	
-	Double getAdministrativeData (Statistic name)
+	Double getAdministrativeData (Statistic name) throws FileNotFoundException
 	{
-		return null;
+		Double return_val;
 		
+		switch (name) {
+			case SESSION_LENGTH:
+				for (Experience experience : data.getExperienceList()) {
+					experience.
+				}
+				
+			default:
+				return_val = null;
+		}
+		
+		return return_val;
 	}
 	
 	List<Double> getAllAdministrativeData (Statistic name)

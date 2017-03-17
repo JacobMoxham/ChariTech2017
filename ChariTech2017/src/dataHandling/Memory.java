@@ -6,4 +6,10 @@ public class Memory {
 	private String last_seen;
 	private int number_seen;
 	private double knowledge_probability;
+	
+	private Learner learner;
+	
+	public int getLearnerID() {
+		return learner_id;
+	}
 }

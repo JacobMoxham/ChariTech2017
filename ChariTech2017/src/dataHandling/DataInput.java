@@ -5,6 +5,8 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.lang.reflect.Type;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import com.google.gson.*;
@@ -18,6 +20,7 @@ public class DataInput {
 	private static List<Transaction> transactionList = null;
 	private static List<Memory> memoryList = null;
 	private static List<Experience> experienceList = null;
+	private static List<Centre> centreList = null;
 	
 	
 	
@@ -109,11 +112,60 @@ public class DataInput {
 	}
 	
 	public static void main(String[] args) throws FileNotFoundException {
-		System.out.println(getContentList());
-		System.out.println(getExperienceList());
-		System.out.println(getMemoryList());
-		System.out.println(getTransactionList());
-		System.out.println(getLearnerList());
+		loadData();
+		normaliseData();
+		System.out.println(centreList.size());
+	}
+	
+	public static void loadData() throws FileNotFoundException {
+		getContentList();
+		getExperienceList();
+		getMemoryList();
+		getTransactionList();
+		getLearnerList();
+	}
+	
+	public static List<Centre> getCentreList() throws FileNotFoundException {
+		if (centreList == null) {
+			loadData();
+			normaliseData();
+		}
+		
+		return centreList;
+	}
+	
+	public static void normaliseData() {
+		HashMap<Integer,Learner> learnerMap = new HashMap<>();
+		HashMap<Integer,Centre> CentreMap = new HashMap<>();
+		centreList = new ArrayList<>();
+		
+		
+		//iterate over learners
+		for (Learner l : learnerList) {
+			learnerMap.put(l.getId(), l);
+			
+			//set centre information
+			if (!CentreMap.containsKey(l.getCentreId())) {
+				Centre newCentre = new Centre(l.getCentreId());
+				CentreMap.put(l.getCentreId(), newCentre);
+				centreList.add(newCentre);
+			}
+			
+			Centre c = CentreMap.get(l.getCentreId());
+			c.addLearner(l);
+			l.setCentre(c);
+			
+		}
+		
+		//set memory information
+		for (Memory m : memoryList) {
+			int learnerId = m.getLearnerID();
+			learnerMap.get(learnerId).addMemory(m);
+		}
+		
+		//System.out.println(learnerList.get(0).getMemories());
+		
+		
 		
 	}
 	

@@ -102,7 +102,7 @@ public class DataInput {
 		if (experienceList == null) {
 			Gson gson = new Gson();
 			
-			BufferedReader br = new BufferedReader(new FileReader(Paths.get("json/memories.json").toFile()));
+			BufferedReader br = new BufferedReader(new FileReader(Paths.get("json/experiences.json").toFile()));
 			JsonReader reader = new JsonReader(br);
 			//reader.setLenient(true);
 			
@@ -117,6 +117,10 @@ public class DataInput {
 	
 	public static void main(String[] args) throws FileNotFoundException {
 		System.out.println(getCentreList().size());
+		
+		for (Experience e : experienceList) {
+			System.out.println(e.getStartTime());
+		}
 	}
 	
 	public static void loadData() throws FileNotFoundException {

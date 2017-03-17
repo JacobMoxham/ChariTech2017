@@ -27,7 +27,7 @@ public class Tutor {
 	{
 		centre_id = id;
 		Date date = new Date();
-		learnerSet = DataInput.getCentreMap().get(centre_id).getLearnerSet();	//how to fix that???
+		learnerSet = DataInput.getCentreMap().get(centre_id).getLearnerSet();
 		
 	}	
 	
@@ -62,26 +62,6 @@ public class Tutor {
 			Double total = 0.0;
 			for(Learner lea: learnerSet)
 			{
-				if(lea.getCentreId() != centre_id) continue;
-				boolean thism = false, lastm = false;
-				for(Transaction tran: lea.getTransactionSet())
-				{
-					if(tran.getAmount() != -1) continue;
-					LocalDate trandate = LocalDate.parse( tran.getTimeStamp(), DateTimeFormatter.ISO_DATE);
-					long days = ChronoUnit.DAYS.between(trandate, date);
-					if(days > 30 && days < 60) lastm = true;
-					if(days < 30) thism = true;
-				}
-				if(thism == false && lastm == true) total += 1;
-			}
-			return total;
-		}
-		if(name == Statistic.ATTRITION)
-		{
-			Double total = 0.0;
-			for(Learner lea: learnerSet)
-			{
-				if(lea.getCentreId() != centre_id) continue;
 				boolean thism = false, lastm = false;
 				for(Transaction tran: lea.getTransactionSet())
 				{
@@ -100,18 +80,15 @@ public class Tutor {
 			Double total = 0.0;
 			for(Learner lea: learnerSet)
 			{
-				boolean thism = false, lastm = false;
+				boolean buying = false;
 				for(Transaction tran:lea.getTransactionSet())
 				{
-					if(tran.getAmount() != -1) continue;
-					LocalDate trandate = LocalDate.parse( tran.getTimeStamp(), DateTimeFormatter.ISO_DATE);
-					long days = ChronoUnit.DAYS.between(trandate, date);
-					if(days > 30 && days < 60) lastm = true;
-					if(days < 30) thism = true;
+					if(tran.getAmount() <= 1) continue;
+					buying = true;
 				}
-				if(thism == false && lastm == true) total += 1;
+				if(buying) total += 1;
 			}
-			return total;
+			return total/learnerSet.size();
 		}
 		return null;
 	}
@@ -126,11 +103,12 @@ public class Tutor {
 			for(Transaction tran: DataInput.getTransactionList())
 			{
 				if(!learnerSet.contains(tran.getLearnerId())) continue;
+				if(tran.getAmount() <= 1) continue;
 				LocalDate trandate = LocalDate.parse( tran.getTimeStamp(), DateTimeFormatter.ISO_DATE);
 				long days = ChronoUnit.DAYS.between(trandate, date);
 				int num = (int) (days/30);
 				while(total.size() < num) total.add(0.0);
-				total.set(num, total.get( num) + tran.getAmount());
+				total.set(num, total.get(num) + tran.getAmount());
 			}
 			return total;
 		}
@@ -178,5 +156,7 @@ public class Tutor {
 		LocalDate trandate = LocalDate.parse( "2016-03-22", DateTimeFormatter.ISO_DATE);
 		final long days = ChronoUnit.DAYS.between(firstDate, trandate);
 		System.out.println(days);
+		
+		Tutor koko = new Tutpr(
 	}
 }

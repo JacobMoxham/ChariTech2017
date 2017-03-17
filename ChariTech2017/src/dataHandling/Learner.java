@@ -1,16 +1,50 @@
 package dataHandling;
 
+import java.util.HashSet;
+import java.util.Set;
+
 public class Learner {
 
-	public int id;
-	public String date_joined;
-	public String language;
-	public String gender;
-	public String date_of_birth;
-	public int grade_at_registration;
+	private int id;
+	private String date_joined;
+	private String language;
+	private String gender;
+	private String date_of_birth;
+	private int grade_at_registration;
 	public int family_size;
-	public String father_occupation;
-	public String mother_occupation;
-	public int centre_id;
+	private String father_occupation;
+	private String mother_occupation;
+	private int centre_id;
+	
+	private HashSet<Memory> memorySet = new HashSet<>();
+	private HashSet<Transaction> transactionSet = new HashSet<>();
+	private Centre learnerCentre;
+	
+	
+	public int getId() {
+		return id;
+	}
+	
+	public void addMemory(Memory m) {
+		memorySet.add(m);
+	}
+	
+	public void addTransaction(Transaction t) {
+		transactionSet.add(t);
+	}
+	
+	public Set<Memory> getMemories() {
+		return memorySet;
+	}
+	
+	public int getCentreId() {
+		return centre_id;
+	}
+	
+	public void setCentre(Centre c) {
+		learnerCentre = c;
+	}
+	
+	
 	
 }

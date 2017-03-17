@@ -20,16 +20,14 @@ import dataHandling.*;
 public class Tutor {
 	
 	private Integer centre_id;
-	private DataInput data;
 	private LocalDate date = LocalDate.now();
 	private Set<Learner> learnerSet;
 
-	Tutor (Integer id)
+	Tutor (Integer id) throws FileNotFoundException
 	{
 		centre_id = id;
-		data = new DataInput();
 		Date date = new Date();
-		learnerSet = new Centre(centre_id).getLearnerSet();	//how to fix that???
+		learnerSet = DataInput.getCentreMap().get(centre_id).getLearnerSet();	//how to fix that???
 		
 	}	
 	
@@ -39,7 +37,7 @@ public class Tutor {
 		if(name == Statistic.INCOME)
 		{
 			Double totalincome = 0.0;
-			for(Transaction tran: data.getTransactionList())
+			for(Transaction tran: DataInput.getTransactionList())
 			{
 				if(!learnerSet.contains(tran.getLearnerId())) continue;
 				LocalDate trandate = LocalDate.parse( tran.getTimeStamp(), DateTimeFormatter.ISO_DATE);
@@ -125,7 +123,7 @@ public class Tutor {
 		if(name == Statistic.INCOME)
 		{
 			ArrayList <Double> total = new ArrayList <Double> ();
-			for(Transaction tran: data.getTransactionList())
+			for(Transaction tran: DataInput.getTransactionList())
 			{
 				if(!learnerSet.contains(tran.getLearnerId())) continue;
 				LocalDate trandate = LocalDate.parse( tran.getTimeStamp(), DateTimeFormatter.ISO_DATE);

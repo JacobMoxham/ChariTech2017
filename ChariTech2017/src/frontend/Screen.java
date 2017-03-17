@@ -11,7 +11,7 @@ public abstract class Screen {
     private Scene mScene;
     private Main mParent;
 
-    public Screen(Stage stage, Main parent){
+    public Screen(Main parent){
         this.mParent = parent;
         generateScene();
     }

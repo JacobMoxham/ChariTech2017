@@ -55,7 +55,7 @@ public class Main extends Application {
         mHeight = 768;
         mStage = primaryStage;
         mScreens = new Stack<>();
-        Screen start_screen = new SplashScreen(mStage, this);
+        Screen start_screen = new SplashScreen(this);
 
         pushScreen(start_screen);
     }

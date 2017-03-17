@@ -3,6 +3,7 @@ package frontend;
 import com.sun.javafx.applet.Splash;
 import javafx.scene.Scene;
 import javafx.scene.layout.*;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 /**
@@ -29,16 +30,21 @@ public abstract class Screen {
         return mParent;
     }
     
-    protected void drawMetricButtons(List<Metric> metrics){
+    protected void drawMetricButtons(List<Metric> metrics, String title){
     	GridPane gridPane = new GridPane();
     	RowConstraints titleRow = new RowConstraints();
     	titleRow.setPercentHeight(0.2);
     	RowConstraints metricsRow = new RowConstraints();
     	titleRow.setPercentHeight(0.8);
     	
+    	//Add title
+    	Text titleText = new Text();
+    	titleText.setText(title);
+    	gridPane.add(titleText, 0, 0);
+    	
     	//Calculate measure of how good each metric is compared to the others
     	double total=0;
-    	for (Metric metric: Metrics){
+    	for (Metric metric: metrics){
     		total+= metric.getValue();
     	}
     	
@@ -46,7 +52,7 @@ public abstract class Screen {
     	int i = 0;
     	for (Metric metric: metrics){
     		//TODO: fine tune button sizes
-    		CircleButton metBut = new CircleButton(metric.getValue(), 50 + (metric.getValue()/total)*200);
+    		CircleButton metBut = new CircleButton(metric.getName() + Double.toString(Double.metric.getValue()), 50 + (metric.getValue()/total)*200);
     		//Handle clicks
     		if (metric.thatBooleanThing){
     			metBut.setOnAction(e -> createMetricScreen(metric.getTimeSensitiveMetrics));

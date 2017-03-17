@@ -163,7 +163,7 @@ public class Tutor {
 				// mapping number of days since current date to list of (minimum start time, maximum end time)
 				Map<Long, List<LocalTime>> dayStartTimes = new HashMap<>();
 				
-				for (Experience experience : data.getExperienceList()) {
+				for (Experience experience : DataInput.getExperienceList()) {
 					// check if experience is at the correct centre by cross-referencing the learner with the centre set
 					if (learnerSet.contains(experience.getLearner())) {
 						// check if experience is within last month

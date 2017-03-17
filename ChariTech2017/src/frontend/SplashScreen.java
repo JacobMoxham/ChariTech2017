@@ -20,6 +20,7 @@ import java.util.Map;
 public class SplashScreen extends Screen {
     public SplashScreen(Main parent){
         super(parent);
+        generateScene();
     }
 
     Map<CircleButton, Integer> button_ids;
@@ -39,9 +40,6 @@ public class SplashScreen extends Screen {
                 ColumnConstraintsBuilder.create().percentWidth(100/3.0).build(),
                 ColumnConstraintsBuilder.create().percentWidth(100/3.0).build()
         );
-        grid.add(new Button("One"),0,0);
-        grid.add(new Button("Two"),1,0);
-        grid.add(new Button("and three"),2,0);
 
         
        

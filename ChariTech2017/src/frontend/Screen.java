@@ -17,7 +17,6 @@ public abstract class Screen {
 
     public Screen(Main parent){
         this.mParent = parent;
-        generateScene();
     }
 
     protected void setScene(Scene scene){
@@ -32,7 +31,7 @@ public abstract class Screen {
         return mParent;
     }
     
-    protected void drawMetricButtons(List<Metric> metrics, String title){
+    protected GridPane drawMetricButtons(List<Metric> metrics, String title){
     	GridPane gridPane = new GridPane();
     	RowConstraints titleRow = new RowConstraints();
     	titleRow.setPercentHeight(0.2);
@@ -54,19 +53,20 @@ public abstract class Screen {
     	int i = 0;
     	for (Metric metric: metrics){
     		//TODO: fine tune button sizes
-    		CircleButton metBut = new CircleButton(metric.getName() + Double.toString(metric.getPrimaryData()), 50 + (metric.getPrimaryData()/total)*200);
+    		CircleButton metBut = new CircleButton(metric.getName() + Double.toString(metric.getPrimaryData()), 200 + (metric.getPrimaryData()/total)*100);
     		//Handle clicks
     		if (metric.getHasDateData()){
-    			metBut.setOnAction(e -> createSingleMetricScreen(metric.getDataByMonth()));
+    			metBut.setOnAction(e -> createSingleMetricScreen(metric.getDataByMonth(), metric.getName()));
     		}
     		gridPane.add(metBut, i, 1);
     		i++;
     	}
+    	return gridPane;
     	//TODO: make sure this stuff gets drawn
     	
     }
-    protected void createSingleMetricScreen(List<Double> list){
-    	
+    protected void createSingleMetricScreen(List<Double> list, String name){
+    	getParent().pushScreen(new GraphScreen(getParent(), name, list));
     }
 
     protected abstract void generateScene();

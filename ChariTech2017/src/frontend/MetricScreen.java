@@ -4,6 +4,7 @@ import datastatistics.Statistic;
 import datastatistics.Tutor;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 
 import java.io.File;
@@ -37,10 +38,12 @@ public class MetricScreen extends Screen {
                 data.add(new DataStruct("New customers", Statistic.NEW_CUSTOMERS, true));
                 data.add(new DataStruct("Attrition", Statistic.ATTRITION, false));
                 data.add(new DataStruct("Conversion rate", Statistic.CONVERSION_RATE, false));
+                break;
         }
 
 
 
+        System.out.println(data.size());
         for(DataStruct d : data){
             boolean t = d.getHasDateData();
             List<Double> dataByMonth = null;
@@ -80,12 +83,11 @@ public class MetricScreen extends Screen {
             Metric metric = new Metric(d.getName(), t, data, dataByMonth);
             mMetrics.add(metric);
         }
-
+        generateScene();
     }
 
     protected void generateScene(){
-        StackPane frame = new StackPane();
-
-        List<MetricType> categories = Arrays.asList(MetricType.values());
+        GridPane frame = this.drawMetricButtons(mMetrics, mType.toString());
+        setScene(new Scene(frame, getParent().getWidth(), getParent().getHeight()));
     }
 }

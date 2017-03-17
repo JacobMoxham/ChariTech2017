@@ -2,6 +2,8 @@ package datastatistics;
 
 import java.util.List;
 
+import dataHandling.*;
+
 public class Tutor {
 	
 	private Integer centre_id;
@@ -14,15 +16,23 @@ public class Tutor {
 	//last month
 	Double getBusinessData (Statistic name)
 	{
-		return null;
+		Double return_val = null;
 		
+		switch (name) {
+			case SESSION_LENGTH:
+				
+				
+			default:
+				break;
+		}
+			
+		return return_val;	
 	}
 	
 	//last months - index 0 - the most recent month
 	List<Double> getAllBusinessData (Statistic name)
 	{
 		return null;
-		
 	}
 	Double getAdministrativeData (Statistic name)
 	{

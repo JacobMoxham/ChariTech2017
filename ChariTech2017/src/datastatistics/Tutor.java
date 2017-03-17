@@ -17,8 +17,6 @@ import java.util.Set;
 
 import javax.swing.text.DateFormatter;
 
-import org.omg.PortableServer.ID_ASSIGNMENT_POLICY_ID;
-
 import dataHandling.*;
 
 public class Tutor {
@@ -215,9 +213,80 @@ public class Tutor {
 		return return_val;
 	}
 	
-	List<Double> getAllAdministrativeData (Statistic name)
+	List<Double> getAllAdministrativeData (Statistic name) throws FileNotFoundException
 	{
-		return null;
+		List<Double> return_vals;
+		
+		switch (name) {
+		case SESSION_LENGTH:
+			// mapping number of days since current date to list of (minimum start time, maximum end time) for each month
+			Map<Integer, Map<Long, List<LocalTime>>> dayStartTimesMonths = new HashMap<>();
+			
+			for (Experience experience : DataInput.getExperienceList()) {
+				// check if experience is at the correct centre by cross-referencing the learner with the centre set
+				if (learnerSet.contains(experience.getLearner())) {
+					// check if experience is within last month
+					LocalDateTime startDateTime = LocalDateTime.parse(experience.getStartTime());
+					
+					long days = ChronoUnit.DAYS.between(startDateTime, date);
+					int index = (int) days / 30;
+					
+					// place into map indexed by month
+					LocalTime startTime = startDateTime.toLocalTime();
+					LocalTime endTime = startTime.plusMinutes(experience.getLatency());
+					
+					// initialise month map
+					dayStartTimesMonths.putIfAbsent(index, new HashMap<>());
+					
+					// initialise list
+					dayStartTimesMonths.get(index).putIfAbsent(days, new ArrayList<LocalTime>());
+					
+					if (dayStartTimesMonths.get(index).get(days).isEmpty()) {
+						dayStartTimesMonths.get(index).get(days).add(startTime);
+						dayStartTimesMonths.get(index).get(days).add(endTime);
+					} else {
+						// ASSERT: both the start time and end time in the list are valid local times
+						// if minimum start time for that day, update
+						if (startTime.compareTo(dayStartTimesMonths.get(index).get(days).get(0)) == -1) {
+							dayStartTimesMonths.get(index).get(days).set(0, startTime);
+						}
+						
+						// if maximum (start time + latency) for that day, update
+						if (endTime.compareTo(dayStartTimesMonths.get(index).get(days).get(1)) == 1) {
+							dayStartTimesMonths.get(index).get(days).set(1, endTime);
+						}
+					}
+				}
+			}
+			
+			// go through all data and calculate actual session length for each day, then average
+			// initialise return_vals
+			return_vals = new ArrayList<>();
+			int max_index = Integer.MIN_VALUE;
+			for (int index : dayStartTimesMonths.keySet()) {
+				if (index > max_index) max_index = index;
+			}
+			for (int i = 0; i < max_index; i++) {
+				return_vals.add(0.0);
+			}
+			
+			for (int index : dayStartTimesMonths.keySet()) {
+				for (List<LocalTime> startEndTimes : dayStartTimesMonths.get(index).values()) {
+					// calculate session length
+					return_vals.set(index,  return_vals.get(index) + ChronoUnit.MINUTES.between(startEndTimes.get(0), startEndTimes.get(1)));
+				}
+			}
+			
+			// return average session length given in minutes
+			for (int index : dayStartTimesMonths.keySet()) {
+				return_vals.set(index, return_vals.get(index) / 6);
+			}
+			
+		default:
+			return_vals = null;
+			
+		return return_vals;
+	}
 		
 	}
 	Double getLearningData (Statistic name)

@@ -1,5 +1,7 @@
 package frontend;
 
+import java.util.List;
+
 import com.sun.javafx.applet.Splash;
 import javafx.scene.Scene;
 import javafx.scene.layout.*;
@@ -45,17 +47,17 @@ public abstract class Screen {
     	//Calculate measure of how good each metric is compared to the others
     	double total=0;
     	for (Metric metric: metrics){
-    		total+= metric.getValue();
+    		total+= metric.getPrimaryData();
     	}
     	
     	//Draw metric buttons
     	int i = 0;
     	for (Metric metric: metrics){
     		//TODO: fine tune button sizes
-    		CircleButton metBut = new CircleButton(metric.getName() + Double.toString(Double.metric.getValue()), 50 + (metric.getValue()/total)*200);
+    		CircleButton metBut = new CircleButton(metric.getName() + Double.toString(metric.getPrimaryData()), 50 + (metric.getPrimaryData()/total)*200);
     		//Handle clicks
-    		if (metric.thatBooleanThing){
-    			metBut.setOnAction(e -> createSingleMetricScreen(metric.getTimeSensitiveMetrics));
+    		if (metric.getHasDateData()){
+    			metBut.setOnAction(e -> createSingleMetricScreen(metric.getDataByMonth()));
     		}
     		gridPane.add(metBut, i, 1);
     		i++;
@@ -63,7 +65,7 @@ public abstract class Screen {
     	//TODO: make sure this stuff gets drawn
     	
     }
-    protected void createSingleMetricScreen(List<Metric> timeMetrics){
+    protected void createSingleMetricScreen(List<Double> list){
     	
     }
 

@@ -6,17 +6,17 @@ import javafx.scene.control.Button;
  * Created by pighe on 17/03/2017.
  */
 public class CircleButton extends Button {
-    private int mRadius;
+    private double mRadius;
 
-    public CircleButton(String text, int r){
+    public CircleButton(String text, double d){
         super(text);
-        mRadius = r;
+        mRadius = d;
         setStyle(
                 "-fx-background-radius: 5em; " +
-                        "-fx-min-width: " + r + "px; " +
-                        "-fx-min-height: " + r + "px; " +
-                        "-fx-max-width: " + r + "px; " +
-                        "-fx-max-height: " + r + "px;"
+                        "-fx-min-width: " + d + "px; " +
+                        "-fx-min-height: " + d + "px; " +
+                        "-fx-max-width: " + d + "px; " +
+                        "-fx-max-height: " + d + "px;"
         );
     }
 }

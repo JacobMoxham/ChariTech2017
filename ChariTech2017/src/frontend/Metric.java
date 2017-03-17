@@ -33,4 +33,7 @@ public class Metric {
     public boolean getHasDateData(){
         return mHasDateData;
     }
+    public List<Double> getDataByMonth(){
+    	return mDataByMonth;
+    }
 }

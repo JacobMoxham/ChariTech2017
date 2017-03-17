@@ -25,7 +25,7 @@ public class Tutor {
 	private LocalDate date = LocalDate.now();
 	private Set<Learner> learnerSet;
 
-	Tutor (Integer id) throws FileNotFoundException
+	public Tutor (Integer id) throws FileNotFoundException
 	{
 		centre_id = id;
 		Date date = new Date();
@@ -194,7 +194,7 @@ public class Tutor {
 		return return_val;
 	}
 	
-	List<Double> getAllAdministrativeData (Statistic name) throws FileNotFoundException
+	public List<Double> getAllAdministrativeData (Statistic name) throws FileNotFoundException
 	{
 		List<Double> return_vals;
 		

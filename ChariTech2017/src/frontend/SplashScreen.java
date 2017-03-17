@@ -5,6 +5,8 @@ import dataHandling.Centre;
 import dataHandling.DataInput;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.layout.ColumnConstraintsBuilder;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
@@ -24,22 +26,34 @@ public class SplashScreen extends Screen {
 
     @Override
     protected void generateScene(){
-        StackPane frame = new StackPane();
-
+        
         List<Centre> centres = null;
         try {
             centres = DataInput.getCentreList();
         }catch(FileNotFoundException e){
             System.out.println("File not found: " + e.getMessage());
         }
+        final GridPane grid = new GridPane();
+        grid.getColumnConstraints().setAll(
+                ColumnConstraintsBuilder.create().percentWidth(100/3.0).build(),
+                ColumnConstraintsBuilder.create().percentWidth(100/3.0).build(),
+                ColumnConstraintsBuilder.create().percentWidth(100/3.0).build()
+        );
+        grid.add(new Button("One"),0,0);
+        grid.add(new Button("Two"),1,0);
+        grid.add(new Button("and three"),2,0);
 
+        
+       
+        int i =0;
         for(Centre centre : centres){
             Button button = new CircleButton("Centre " + centre.getCentreID(), 100);
             button.setOnAction(e -> centreClicked(centre.getCentreID()));
-            frame.getChildren().add(button);
+            grid.add(button,i,0);
+            i++;
         }
 
-        setScene(new Scene(frame, getParent().getWidth(), getParent().getHeight()));
+        setScene(new Scene(grid, getParent().getWidth(), getParent().getHeight()));
 
     }
 
